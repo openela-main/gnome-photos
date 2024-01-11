@@ -1,0 +1,276 @@
+From 1565368816f7cb4b34be21f5ef47f73940d6cf04 Mon Sep 17 00:00:00 2001
+From: Debarshi Ray <debarshir@gnome.org>
+Date: Mon, 9 Nov 2020 23:42:46 +0100
+Subject: [PATCH] Add a manual
+
+https://gitlab.gnome.org/GNOME/gnome-photos/-/merge_requests/153
+---
+ Makefile.am              |   2 +-
+ configure.ac             |   6 ++
+ manuals/Makefile.am      |  18 ++++
+ manuals/gnome-photos.xml | 192 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 217 insertions(+), 1 deletion(-)
+ create mode 100644 manuals/Makefile.am
+ create mode 100644 manuals/gnome-photos.xml
+
+diff --git a/Makefile.am b/Makefile.am
+index 0c7d8bff0cf1..7b19e62f5d62 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,6 +1,6 @@
+ ACLOCAL_AMFLAGS = -I m4 -I libgd ${ACLOCAL_FLAGS}
+ 
+-SUBDIRS = . data libgd src po tests help
++SUBDIRS = . data libgd manuals src po tests help
+ 
+ photosdocdir = $(docdir)
+ photosdoc_DATA = \
+diff --git a/configure.ac b/configure.ac
+index 904a031c6ec1..5d511bba1390 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -149,6 +149,11 @@ if test -z "$DESKTOP_FILE_VALIDATE"; then
+   AC_MSG_ERROR([desktop-file-validate not found])
+ fi
+ 
++AC_PATH_PROG([XSLTPROC],[xsltproc],[])
++if test -z "$XSLTPROC"; then
++  AC_MSG_ERROR([xsltproc not found])
++fi
++
+ #############################################
+ #Documentation
+ #############################################
+@@ -163,6 +168,7 @@ data/org.gnome.Photos.desktop.in
+ data/icons/Makefile
+ help/Makefile
+ libgd/Makefile
++manuals/Makefile
+ src/Makefile
+ tests/Makefile
+ po/Makefile.in
+diff --git a/manuals/Makefile.am b/manuals/Makefile.am
+new file mode 100644
+index 000000000000..508c3cea2701
+--- /dev/null
++++ b/manuals/Makefile.am
+@@ -0,0 +1,18 @@
++XSLTPROC_FLAGS = \
++        --nonet \
++        --stringparam funcsynopsis.style ansi \
++        --stringparam man.authors.section.enabled 0 \
++        --stringparam man.copyright.section.enabled 0 \
++        --stringparam man.output.quietly 1
++
++.xml.1:
++	$(AM_V_GEN) $(XSLTPROC) $(XSLTPROC_FLAGS) http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
++
++man_MANS = \
++	gnome-photos.1
++
++xml_files = $(man_MANS:.1=.xml)
++
++EXTRA_DIST = $(xml_files)
++
++CLEANFILES = $(man_MANS)
+diff --git a/manuals/gnome-photos.xml b/manuals/gnome-photos.xml
+new file mode 100644
+index 000000000000..c370e31057c7
+--- /dev/null
++++ b/manuals/gnome-photos.xml
+@@ -0,0 +1,192 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<refentry id="gnome-photos.1">
++  <refentryinfo>
++    <title>gnome-photos</title>
++    <date>November 2020</date>
++    <productname>GNOME</productname>
++  </refentryinfo>
++
++  <refmeta>
++    <refentrytitle>gnome-photos</refentrytitle>
++    <manvolnum>1</manvolnum>
++    <refmiscinfo class="manual">User Commands</refmiscinfo>
++  </refmeta>
++
++  <refnamediv>
++    <refname>gnome-photos</refname>
++    <refpurpose>Access, organize and share your photos on GNOME</refpurpose>
++  </refnamediv>
++
++  <refsynopsisdiv>
++    <cmdsynopsis>
++      <command>gnome-photos</command>
++      <group rep="repeat"><replaceable>OPTION</replaceable></group>
++    </cmdsynopsis>
++  </refsynopsisdiv>
++
++
++  <refsect1>
++    <title>DESCRIPTION</title>
++    <para>
++      <command>gnome-photos</command> is an application to access, organize
++      and share your photos on GNOME. A simple and elegant replacement for
++      using a file manager to deal with photos. Enhance, crop and edit in a
++      snap. Seamless cloud integration is offered through GNOME Online
++      Accounts.
++    </para>
++  </refsect1>
++
++  <refsect1>
++    <title>OPTIONS</title>
++    <variablelist>
++      <varlistentry>
++        <term><option>--help, -h</option></term>
++        <listitem>
++          <para>
++            Show a brief overview of all the options.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--help-all</option></term>
++        <listitem>
++          <para>
++            Show all the options in detail.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--help-gapplication</option></term>
++        <listitem>
++          <para>
++            Show all the GApplication options.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--help-gtk</option></term>
++        <listitem>
++          <para>
++            Show all the GTK options.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--empty-results</option></term>
++        <listitem>
++          <para>
++            Show the empty state.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--version</option></term>
++        <listitem>
++          <para>
++            Show the application's version.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gapplication-service</option></term>
++        <listitem>
++          <para>
++            Enter GApplication service mode. To be used from D-Bus service
++            files.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--class=CLASS</option></term>
++        <listitem>
++          <para>
++            Program class as used by the window manager.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--display=DISPLAY</option></term>
++        <listitem>
++          <para>
++            X display to use.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--g-fatal-warnings</option></term>
++        <listitem>
++          <para>
++            Make all warnings fatal.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gdk-debug=FLAGS</option></term>
++        <listitem>
++          <para>
++            GDK debugging flags to set.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gdk-no-debug=FLAGS</option></term>
++        <listitem>
++          <para>
++            GDK debugging flags to unset.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gtk-debug=FLAGS</option></term>
++        <listitem>
++          <para>
++            GTK debugging flags to set.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gtk-no-debug=FLAGS</option></term>
++        <listitem>
++          <para>
++            GTK debugging flags to unset.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--gtk-module=MODULES</option></term>
++        <listitem>
++          <para>
++            Load additional GTK modules.
++          </para>
++        </listitem>
++      </varlistentry>
++      <varlistentry>
++        <term><option>--name=NAME</option></term>
++        <listitem>
++          <para>
++            Program name as used by the window manager.
++          </para>
++        </listitem>
++      </varlistentry>
++    </variablelist>
++  </refsect1>
++
++  <refsect1>
++    <title>BUGS</title>
++    <para>
++      Please send bug reports to either the distribution bug tracker or the
++      upstream bug tracker at
++      <ulink url="https://gitlab.gnome.org/GNOME/gnome-photos/issues"></ulink>.
++      There are some debugging tips at
++      <ulink url="https://wiki.gnome.org/Apps/Photos/Debugging"></ulink>
++    </para>
++  </refsect1>
++
++  <refsect1>
++    <title>SEE ALSO</title>
++    <para>
++      For further information, visit the website
++      <ulink url="https://wiki.gnome.org/Apps/Photos"></ulink>.
++    </para>
++  </refsect1>
++</refentry>
+-- 
+2.28.0
+

@@ -1,0 +1,36 @@
+From 4479b7da00ba788e85b463e06dbf57f633ec2c01 Mon Sep 17 00:00:00 2001
+From: Debarshi Ray <debarshir@freedesktop.org>
+Date: Fri, 27 Apr 2018 10:52:37 +0200
+Subject: [PATCH] build: Bump minimum GEGL version to 0.4.0
+
+No code change needed. It's a natural progression from the unstable
+0.3.x series to the stable 0.4.x series.
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 9d78c37bde70..7c7751b04540 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -40,7 +40,7 @@ CAIRO_MIN_VERSION=1.14.0
+ DAZZLE_MIN_VERSION=3.26.0
+ GDATA_MIN_VERSION=0.15.2
+ GDK_PIXBUF_MIN_VERSION=2.32
+-GEGL_MIN_VERSION=0.3.28
++GEGL_MIN_VERSION=0.4.0
+ GFBGRAPH_MIN_VERSION=0.2.1
+ GLIB_MIN_VERSION=2.44.0
+ GOA_MIN_VERSION=3.8.0
+@@ -103,7 +103,7 @@ PKG_CHECK_MODULES(CAIRO, [cairo >= $CAIRO_MIN_VERSION cairo-gobject])
+ PKG_CHECK_MODULES(DAZZLE, [libdazzle-1.0 >= $DAZZLE_MIN_VERSION])
+ PKG_CHECK_MODULES(GFBGRAPH, [libgfbgraph-0.2 >= $GFBGRAPH_MIN_VERSION])
+ PKG_CHECK_MODULES(GDATA, [libgdata >= $GDATA_MIN_VERSION])
+-PKG_CHECK_MODULES(GEGL, [gegl-0.3 >= $GEGL_MIN_VERSION])
++PKG_CHECK_MODULES(GEGL, [gegl-0.4 >= $GEGL_MIN_VERSION])
+ PKG_CHECK_MODULES(GEOCODE, [geocode-glib-1.0])
+ PKG_CHECK_MODULES(GEXIV2, [gexiv2])
+ PKG_CHECK_MODULES(GDK_PIXBUF, [gdk-pixbuf-2.0 >= $GDK_PIXBUF_MIN_VERSION])
+-- 
+2.14.4
+
